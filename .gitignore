@@ -1,0 +1,37 @@
+# --- OpenRAM generated macro output ---
+#sram_4kb/                 # or whatever your OpenRAM output dir is named
+#**/openram_output/
+
+# --- Magic ---
+*.ext
+*.sim
+*.mag.bak
+*~
+
+# --- ngspice ---
+*.raw
+*.log
+*.lis
+*.out
+
+# --- Xschem backups ---
+*.sch.bak
+*.sym.bak
+backup/
+
+# --- LVS/DRC ---
+*.rpt
+*.report
+netgen_*.out
+
+# --- GDS (uncomment if you don't want to track tapeouts) ---
+# *.gds
+
+# --- Python ---
+__pycache__/
+*.pyc
+
+# --- Editor/OS ---
+.DS_Store
+*.swp
+.vscode/
