@@ -1,0 +1,44 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/six_t_write_snm.sch
+**.subckt six_t_write_snm
+XM2 q2 qb2 0 0 sky130_fd_pr__nfet_01v8 L=0.21 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM3 q2 qb2 VDD VDD sky130_fd_pr__pfet_01v8 L=0.21 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM4 qb1 q1 0 0 sky130_fd_pr__nfet_01v8 L=0.21 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM5 qb1 q1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.21 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+v1 q1 0 1.8
+v2 qb2 0 1.8
+XM6 bl VDD qb1 0 sky130_fd_pr__nfet_01v8 L=0.21 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM7 blb VDD q2 0 sky130_fd_pr__nfet_01v8 L=0.21 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+**** begin user architecture code
+
+
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+VDD VDD 0 1.8
+Vbl bl 0 0
+Vblb blb 1.8 0
+
+.control
+dc V1 0 1.8 0.01
+*wrdata dc1_out.txt v(q1) v(qb1)
+dc V2 0 1.8 0.01
+*wrdata dc2_out.txt v(q2) v(qb2)
+plot dc1.v(q1) vs dc1.v(qb1) dc2.v(q2) vs dc2.v(qb2)
+
+.endc
+
+
+
+
+**** end user architecture code
+**.ends
+.GLOBAL VDD
+.GLOBAL blb
+.GLOBAL bl
+.end

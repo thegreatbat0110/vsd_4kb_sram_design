@@ -1,0 +1,52 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/write_driver.sch
+**.subckt write_driver
+XM1 net1 din net4 net4 sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM2 net1 din net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM3 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM4 net5 write_en net2 net2 sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0
++ sd=0 mult=1
+XM5 net5 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM6 net5 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM7 net6 net1 net8 net8 sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM8 net6 net1 net7 net7 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM9 net9 net6 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM10 net10 write_en net9 net9 sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0
++ sd=0 mult=1
+XM11 net10 net6 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM12 net10 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM13 blb net5 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM14 blb 0 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM15 bl 0 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM16 bl net10 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+**** begin user architecture code
+
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+VDD VDD 0 1.8
+V2 write_en 0 pulse(0 1.8 0 60ps 60ps 2ns 4ns)
+V3 din gnd pulse 0 1.8 0 60ps 60ps 0.5ns 1ns
+.tran 0.1p 10n
+.control
+run
+plot V(write_en)+6 V(din)+4 V(bl)+2 V(blb)
+.endc
+
+
+
+
+**** end user architecture code
+**.ends
+.GLOBAL VDD
+.GLOBAL write_en
+.GLOBAL din
+.end
