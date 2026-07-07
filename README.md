@@ -12,7 +12,7 @@ Static Random Access Memory (SRAM) is a volatile memory technology that stores d
 
 SRAM is widely used in cache memories, register files, and other high-speed memory applications because of its fast access time and low latency.
 
-###6T SRAM Bitcell
+### 6T SRAM Bitcell
 ----------------
 
 The basic SRAM storage element is the **6-transistor (6T) bitcell**. It is built from:
