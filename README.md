@@ -111,12 +111,23 @@ OpenRAM is used for SRAM compiler-based generation and exploration of memory mac
 
 ## Key Design Concerns
 
-Important SRAM design metrics include:
+1.Static Noise Margin (SNM)
+Static Noise Margin is the maximum noise voltage an SRAM cell can tolerate without losing its stored data. It is a direct measure of cell stability and is commonly extracted using the butterfly curve. A higher SNM indicates a more robust SRAM cell.
 
-- Static noise margin.
-- Read stability.
-- Write ability.
-- Access time.
-- Power consumption.
-- Cell area.
-- Bitline delay.
+-Read Stability
+Read stability describes the ability of the SRAM cell to preserve its stored value during a read operation. Since the internal storage nodes are connected to the bitlines during read, the cell must be sized so that the stored value is not disturbed.
+
+-Write Ability
+Write ability is the ease with which the SRAM cell can be overwritten during a write operation. The write driver must be strong enough to overcome the feedback of the cross-coupled inverters and force the cell into the new state.
+
+2.Access Time
+Access time is the delay between applying an address and obtaining valid data from the SRAM cell. It depends on the cell, wordline, bitline, decoder, and sense amplifier performance.
+
+3.Power Consumption
+Power consumption in SRAM includes dynamic power from bitline switching and static power from leakage currents. In large arrays, bitline activity is one of the main contributors to total power.
+
+4.Cell Area
+Cell area is the silicon space occupied by one SRAM bitcell. Smaller area improves memory density, but aggressive scaling can reduce stability and manufacturability.
+
+5.Bitline Delay
+Bitline delay is the time required for the bitlines to develop a readable voltage difference. Since bitlines have large capacitance, they strongly affect SRAM speed and overall access time.
