@@ -12,7 +12,9 @@ Result-
 
 2.Sense amplifier giving same value (dout) no matter input.
 
-<img width="1734" height="929" alt="image" src="https://github.com/user-attachments/assets/26e5b51a-91a9-4e33-8380-2dd47a031b4f" /><img width="1703" height="883" alt="image" src="https://github.com/user-attachments/assets/095a7b49-5471-4b0a-81b0-2a427b51f70c" />
+<img width="642" height="368" alt="image" src="https://github.com/user-attachments/assets/b3d844ce-8c1c-49ec-9306-a2a01c4da5d4" />
+
+<img width="633" height="558" alt="image" src="https://github.com/user-attachments/assets/5f530f53-6adf-4664-8759-f32d135c8a6d" />
 
 Circuit -
 
