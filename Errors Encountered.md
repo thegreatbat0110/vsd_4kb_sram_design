@@ -31,7 +31,8 @@ Source - https://www.slideshare.net/slideshow/projectfinal-62248666/62248666
 
 Now, 
 
-<img width="1175" height="1031" alt="image" src="https://github.com/user-attachments/assets/2eb0c469-b6ca-461b-b8da-3f5387b32871" />
+<img width="1064" height="868" alt="image" src="https://github.com/user-attachments/assets/add861d9-f768-4e46-8221-73cd8edb5937" />
+
 
 <img width="1162" height="1031" alt="image" src="https://github.com/user-attachments/assets/73d2e230-3933-469c-b81f-eb35089113ee" />
 
