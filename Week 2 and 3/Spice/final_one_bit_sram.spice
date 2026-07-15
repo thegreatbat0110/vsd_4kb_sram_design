@@ -1,0 +1,286 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/final_one_bit_sram.sch
+**.subckt final_one_bit_sram
+x1 prec blb bl VDD precharge
+x2 read_en blb bl VDD dout sense_amplifier
+x4 write_en blb bl VDD din write_driver
+x3 wl VDD blb bl Q QB six_t
+**** begin user architecture code
+
+
+**** begin user architecture code
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+*------------------------------------------------------------------------------
+* SUPPLIES
+*------------------------------------------------------------------------------
+
+V1 vdd gnd dc 1.8
+
+.ic v(Q)=1.8 v(QB)=0
+
+Cbl  bl  gnd 400f
+Cblb blb gnd 400f
+
+
+*------------------------------------------------------------------------------
+* PRECHARGE (active LOW)
+*------------------------------------------------------------------------------
+Vprec prec gnd PWL
++0n      0
++5.00n   0
++5.06n   1.8
+
++20.00n  1.8
++20.06n 0
++25.00n 0
++25.06n 1.8
+
++40.00n  1.8
++40.06n 0
++45.00n  0
++45.06n  1.8
+
++60.00n  1.8
++60.06n 0
++65.00n  0
++65.06n  1.8
+
++80.00n  1.8
++80.06n 0
++85.00n  0
++85.06n  1.8
+
++100n     1.8
+*----------------
+Vwl wl gnd PWL
++0n        0
+
+* Write 1
++10.12n    0
++10.18n    1.8
++16.12n    1.8
++16.18n    0
+
+* Read
++50.12n    0
++50.18n    1.8
++51.00n    1.8
++51.06n    0
+
+* Write 0
++70.12n    0
++70.18n    1.8
++76.12n    1.8
++76.18n    0
+
+* Read
++90.12n    0
++90.18n    1.8
++91.00n    1.8
++91.06n    0
+
++100n      0
+*--------------------------
+Vwrite_en write_en gnd PWL
++0n        0
+
+* Write 1
++10.26n    0
++10.32n    1.8
++13.26n    1.8
++13.32n    0
+
+* Write 0
++70.26n    0
++70.32n    1.8
++73.26n    1.8
++73.32n    0
+
++100n      0
+*-----------------------------
+Vread_en read_en gnd PWL
++0n         0
+
+* Read 1
++50.26n     0
++50.32n     1.8
++53.26n     1.8
++53.32n     0
+
+* Read 0
++90.26n     0
++90.32n     1.8
++93.26n     1.8
++93.32n     0
+
++100n       0
+*---------------------------
+Vdin din gnd PWL
++0n       0
++60.00n   0
++60.06n   1.8
++100n     1.8
+*------------------------------------------------------------------------------
+* SIMULATION
+*------------------------------------------------------------------------------
+
+.tran 0.1p 100n
+.temp 27
+
+*------------------------------------------------------------------------------
+* MEASUREMENTS
+*------------------------------------------------------------------------------
+
+.meas tran t_write1 TRIG v(wl) VAL=0.9 RISE=1 TARG v(Q)    VAL=0.9 RISE=1
+
+.meas tran t_read1  TRIG v(read_en) VAL=0.9 RISE=1 TARG v(dout) VAL=0.9 RISE=1
+
+.meas tran t_write0 TRIG v(wl) VAL=0.9 RISE=3 TARG v(Q)    VAL=0.9 FALL=1
+
+.meas tran t_read0  TRIG v(read_en) VAL=0.9 RISE=2 TARG v(dout) VAL=0.9 FALL=1
+.save v(prec) v(wl) v(write_en) v(read_en) v(din) v(Q) v(QB) v(bl) v(blb) v(dout)
+.save v(x4.net1) v(x4.net2) v(x4.net3) v(x4.net4) v(x4.dout_b) v(x4.read_en_b)
+.control
+run
+
+plot bl+2 blb
+plot prec+8 wl+6
+plot write_en+4 read_en+2
+plot Q+2 QB
+plot dout
+
+.endc
+
+**** end user architecture code
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  precharge.sym # of pins=4
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/precharge.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/precharge.sch
+.subckt precharge precharge blb bl VDD
+*.ipin precharge
+*.iopin bl
+*.iopin blb
+*.ipin VDD
+XM1 blb precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM2 bl precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM3 blb precharge bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+.ends
+
+
+* expanding   symbol:  sense_amplifier.sym # of pins=5
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/sense_amplifier.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/sense_amplifier.sch
+.subckt sense_amplifier read_en blb bl VDD dout
+*.ipin VDD
+*.iopin bl
+*.iopin blb
+*.ipin read_en
+*.opin dout
+XM1 net1 net2 net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM2 net1 net2 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM3 net2 net1 net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM4 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM5 net4 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM6 net4 net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM7 net1 read_en_b blb VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM8 net2 read_en_b bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM9 net3 read_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM10 dout_b net2 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM11 dout_b net2 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM12 read_en_b read_en vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM13 read_en_b read_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM14 dout read_en net4 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM15 net4 read_en_b dout vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM16 dout read_en_b 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095
++ nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM17 net2 read_en vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873
++ nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM18 net1 read_en VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+
+* expanding   symbol:  write_driver.sym # of pins=5
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/write_driver.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/write_driver.sch
+.subckt write_driver write_en blb bl VDD din
+*.ipin VDD
+*.ipin write_en
+*.ipin din
+*.iopin bl
+*.iopin blb
+XM3 net1 din 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM4 net1 din VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM5 net2 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM6 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM8 net3 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM9 net4 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM7 bl net1 net3 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM10 blb net2 net4 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+
+* expanding   symbol:  six_t.sym # of pins=6
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/six_t.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/six_t.sch
+.subckt six_t wl VDD blb bl Q QB
+*.iopin bl
+*.opin Q
+*.opin QB
+*.ipin wl
+*.ipin VDD
+*.iopin blb
+XM3 QB Q 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM4 QB wl blb 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM5 Q wl bl 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM6 Q QB VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM7 QB Q VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM1 Q QB 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+.ends
+
+.GLOBAL VDD
+.GLOBAL wl
+.GLOBAL Q
+.GLOBAL QB
+.GLOBAL prec
+.GLOBAL read_en
+.GLOBAL dout
+.GLOBAL din
+.GLOBAL write_en
+.GLOBAL vdd
+.end

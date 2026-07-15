@@ -1,0 +1,119 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/wdpctest.sch
+**.subckt wdpctest write_en din precharge VDD
+*.ipin write_en
+*.ipin din
+*.ipin precharge
+*.ipin VDD
+XM3 net1 din 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM4 net1 din VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM5 net2 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM6 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM8 net3 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM9 net4 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM7 bl net1 net3 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM10 blb net2 net4 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XM1 blb precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM2 bl precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM11 blb precharge bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+**** begin user architecture code
+
+
+*===========================================================
+* Testbench for wdpctest
+*===========================================================
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+VDD vdd 0 DC 1.8
+
+* Bitline Loads
+*-----------------------------------------------------------
+
+Cbl  bl 0 400f
+Cblb blb 0 400f
+
+*-----------------------------------------------------------
+* DATA
+*-----------------------------------------------------------
+
+Vdin din 0 PWL
++0n      1.8
++20n     1.8
++20.06n  0
++40n     0
+
+*-----------------------------------------------------------
+* PRECHARGE (ACTIVE LOW)
+*-----------------------------------------------------------
+
+Vpre precharge 0 PWL
++0n       0
++5n       0
++5.06n    1.8
+
++20n      1.8
++20.06n  0
++25n      0
++25.06n   1.8
+
++40n      1.8
+
+*-----------------------------------------------------------
+* WRITE ENABLE
+*-----------------------------------------------------------
+
+Vwe write_en 0 PWL
++0n       0
+
+* Write '1'
++5.20n    0
++5.26n    1.8
++10n      1.8
++10.06n   0
+
+* Write '0'
++25.20n   0
++25.26n   1.8
++30n      1.8
++30.06n   0
+
++40n      0
+
+*-----------------------------------------------------------
+* Simulation
+*-----------------------------------------------------------
+
+.tran 0.05p 40n
+.temp 27
+
+*-----------------------------------------------------------
+* Measurements
+*-----------------------------------------------------------
+
+.save v(precharge) v(write_en) v(din) v(bl) v(blb)
+
+.control
+run
+
+plot precharge+10 write_en+8 din+6 bl+4 blb+2
+
+.endc
+
+
+
+
+
+
+**** end user architecture code
+**.ends
+.GLOBAL VDD
+.end

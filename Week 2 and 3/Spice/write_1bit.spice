@@ -1,0 +1,158 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/1bitsramwrite_july7.sch
+**.subckt 1bitsramwrite_july7
+x1 prec blb bl VDD precharge
+x6 VDD write_en bl blb din new_wd
+x7 VDD wl blb bl Q QB six_t
+x8 read_en blb bl VDD dout new_sense_amp
+**** begin user architecture code
+
+
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/1_bit_sram.sch
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+
+V1     vdd      gnd dc 1.8V
+* For 4KB array (64 rows per column):
+
+Cbl bl gnd 400f
+Cblb blb gnd 400f
+
+
+.ic V(Q)=0V V(QB)=1.8V
+
+Vprec    prec     gnd pulse 0 1.8 1ns 60ps 60ps 9ns 20ns
+Vwrite_en write_en gnd pulse 0 1.8 3.2ns 60ps 60ps 3ns  20ns
+Vwl      wl       gnd pulse 0 1.8 3.5ns 60ps 60ps 6ns  20ns
+Vrd_en read_en  gnd dc 0V
+* din=1 means we're writing a 1 into the cell
+Vdin din gnd dc 1.8V
+
+.tran 0.1p 20n
+
+.control
+run
+
+* Panel 1: control signals
+plot V(prec)+6 V(write_en)+4 V(wl)+2
+
+* Panel 2: bitlines — BL should stay HIGH, BLB should be pulled LOW
+* (writing din=1: BL=1, BLB=0)
+plot V(bl) V(blb)
+
+* Panel 3: cell state — Q should FLIP from 0 to 1
+plot V(Q) V(QB)
+meas tran t_write trig v(wl) val=0.9 rise=1 targ v(Q) val=0.9 fall=1
+.endc
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  precharge.sym # of pins=4
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/precharge.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/precharge.sch
+.subckt precharge precharge blb bl VDD
+*.ipin precharge
+*.iopin bl
+*.iopin blb
+*.ipin VDD
+XM1 blb precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XM2 bl precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XM3 blb precharge bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+.ends
+
+
+* expanding   symbol:  new_wd.sym # of pins=5
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/new_wd.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/new_wd.sch
+.subckt new_wd VDD write_en bl blb din
+*.ipin VDD
+*.ipin write_en
+*.ipin din
+*.iopin bl
+*.iopin blb
+XM1 write_en_b write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM2 write_en_b write_en VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM3 net1 din 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM4 net1 din VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM5 net2 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM6 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM8 net3 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1
+XM9 net4 write_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1
+XM7 bl net1 net3 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1
+XM10 blb net2 net4 0 sky130_fd_pr__nfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1
+.ends
+
+
+* expanding   symbol:  six_t.sym # of pins=6
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/six_t.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/six_t.sch
+.subckt six_t VDD wl blb bl Q QB
+*.iopin bl
+*.opin Q
+*.opin QB
+*.ipin wl
+*.ipin VDD
+*.iopin blb
+XM3 QB Q 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM4 QB wl blb 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM5 Q wl bl 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM6 Q QB VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM7 QB Q VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+XM1 Q QB 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1.26 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2)
++ * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1
+.ends
+
+
+* expanding   symbol:  new_sense_amp.sym # of pins=5
+** sym_path: /home/kaavya/chip/SRAM_SKY130/xschem/new_sense_amp.sym
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/new_sense_amp.sch
+.subckt new_sense_amp read_en blb bl VDD dout
+*.ipin VDD
+*.iopin bl
+*.iopin blb
+*.ipin read_en
+*.opin dout
+XM1 net1 net2 net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM2 net1 net2 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM3 net2 net1 net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM4 net2 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM5 net4 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM6 net4 net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM7 net1 read_en_b blb VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM8 net2 read_en_b bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM9 net3 read_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM10 dout_b net2 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM11 dout_b net2 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM12 read_en_b read_en vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM13 read_en_b read_en 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM14 dout read_en net4 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+XM15 net4 read_en_b dout vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM16 dout read_en_b 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.84 nf=1 ad=0.2436 as=0.2436 pd=2.26 ps=2.26 nrd=0.345238095238095 nrs=0.345238095238095 sa=0 sb=0 sd=0 mult=1
+**** begin user architecture code
+
+
+
+Cdelay read_en_b 0 10f
+
+
+**** end user architecture code
+XM17 net2 read_en vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1.26 nf=1 ad=0.3654 as=0.3654 pd=3.1 ps=3.1 nrd=0.23015873015873 nrs=0.23015873015873 sa=0 sb=0 sd=0 mult=1
+XM18 net1 read_en VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+.ends
+
+.GLOBAL VDD
+.GLOBAL wl
+.GLOBAL Q
+.GLOBAL QB
+.GLOBAL prec
+.GLOBAL read_en
+.GLOBAL dout
+.GLOBAL din
+.GLOBAL write_en
+.GLOBAL vdd
+.end

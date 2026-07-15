@@ -1,0 +1,58 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/ddf.sch
+**.subckt ddf
+XM1 D CLK net1 net1 sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM2 D CLKB net1 net1 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM3 net2 CLK net3 net3 sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM4 net2 CLKB net3 net3 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM5 net1 CLKB net4 net4 sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM6 net1 CLK net4 net4 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM7 net5 CLKB net2 net2 sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM8 net5 CLK net2 net2 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM9 CLKB CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM10 CLKB CLK 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM11 net4 net5 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM12 net4 net5 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM13 net5 net1 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM14 net5 net1 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM15 Q net2 VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM16 Q net2 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+XM17 net3 Q VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=0.55 nf=1 ad=0.1595 as=0.1595 pd=1.68 ps=1.68 nrd=0.527272727272727
++ nrs=0.527272727272727 sa=0 sb=0 sd=0 mult=1
+XM18 net3 Q 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1
+**** begin user architecture code
+
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+VDD VDD 0 1.8
+Vd D 0 pulse 0 1.8 2.5ns 60ps 60ps 15ns 30ns
+Vclk CLK 0 pulse 0 1.8 0 60ps 60ps 5ns 10ns
+.tran 0.1ns 100ns
+.control
+run
+plot v(D)+4 v(CLK)+2 V(Q)
+.endc
+
+
+**** end user architecture code
+**.ends
+.GLOBAL CLK
+.GLOBAL CLKB
+.GLOBAL VDD
+.end

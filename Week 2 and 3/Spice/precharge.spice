@@ -1,0 +1,29 @@
+** sch_path: /home/kaavya/chip/SRAM_SKY130/xschem/precharge.sch
+**.subckt precharge precharge blb bl VDD
+*.ipin precharge
+*.iopin bl
+*.iopin blb
+*.ipin VDD
+XM1 blb precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM2 bl precharge VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+XM3 blb precharge bl VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0
++ sd=0 mult=1
+**** begin user architecture code
+
+
+.lib /home/kaavya/.ciel/ciel/sky130/versions/9233c19260cd813c3fa67dd4594fe4cc67016832/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+V1 VDD gnd dc 1.8
+V2 precharge gnd pulse 0 1.8 0 60ps 60ps 5ns 10ns
+
+.tran 1n 50n
+.control
+run
+plot V(precharge)+6 V(bl)+2 V(blb)
+.endc
+
+**** end user architecture code
+**.ends
+.GLOBAL VDD
+.end
